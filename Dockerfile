@@ -29,12 +29,12 @@ FROM eclipse-temurin:11-jre-jammy
 WORKDIR /srv/eagler
 COPY --from=builder /out/ ./
 
-# Ensure we bind correctly in Koyeb and respect its $PORT
+# ENTRYPOINT now starts Java itself; CMD only adds server args like "nogui"
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Koyeb will route HTTP/WSS -> $PORT; we default to 25565 locally
 EXPOSE 25565
-ENV JAVA_OPTS="-Xms256m -Xmx384m"
+# Keep heap small for Koyeb free instance
+ENV JAVA_TOOL_OPTIONS="-Xms256m -Xmx384m"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
-CMD ["java", "-server", "-jar", "paper.jar", "nogui"]
+CMD ["nogui"]
