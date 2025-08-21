@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
-
-# If Koyeb provides $PORT, write it into server.properties so the server listens there.
+# Map Koyeb's $PORT (if present) into server.properties
 if [ -n "$PORT" ]; then
   if grep -q "^server-port=" server.properties 2>/dev/null; then
     sed -i "s/^server-port=.*/server-port=${PORT}/" server.properties
@@ -9,5 +8,4 @@ if [ -n "$PORT" ]; then
     echo "server-port=${PORT}" >> server.properties
   fi
 fi
-
-exec "$@"
+exec ${JAVA_OPTS:+sh -c "exec $* $JAVA_OPTS"} "$@"
