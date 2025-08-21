@@ -20,6 +20,6 @@ COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 25565
-ENV JAVA_OPTS="-Xmx384m"
+ENV JAVA_OPTS="-Xms500m -Xmx500m"
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 CMD ["java", "-server", "-XX:+UseG1GC", "-XX:MaxGCPauseMillis=150", "-jar", "paper-1.12.2.jar", "nogui"]
