@@ -1,5 +1,5 @@
 # ---------- builder: run Paperclip ONCE with lots of RAM ----------
-FROM eclipse-temurin:11-jdk-jammy AS builder
+FROM eclipse-temurin:17-jre-jammy AS builder
 WORKDIR /build
 RUN apt-get update && apt-get install -y curl unzip && rm -rf /var/lib/apt/lists/*
 
@@ -25,7 +25,7 @@ RUN mkdir -p /out && \
 RUN rm -f /out/paper-1.12.2.jar
 
 # ---------- runtime: tiny, only runs the patched jar ----------
-FROM eclipse-temurin:11-jre-jammy
+FROM eclipse-temurin:17-jre-jammy
 WORKDIR /srv/eagler
 COPY --from=builder /out/ ./
 
